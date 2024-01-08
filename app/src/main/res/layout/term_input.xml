@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/dialog_add_term.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:ignore="MissingConstraints">
+
+    <!-- EditText for entering the term -->
+
+    <EditText
+        android:id="@+id/editTextTerm"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:hint="@string/enter_term" />
+
+
+    <TextView
+        android:id="@+id/startDateText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_start_date"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp" />
+
+    <DatePicker
+        android:id="@+id/startDatePicker"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false" />
+
+    <TextView
+        android:id="@+id/endDateText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_end_date"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp" />
+
+    <DatePicker
+        android:id="@+id/endDatePicker"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false" />
+
+
+
+
+
+
+
+
+
+
+    <!-- Add any other UI elements you need for the dialog here -->
+
+</LinearLayout>
