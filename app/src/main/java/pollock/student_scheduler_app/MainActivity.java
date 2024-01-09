@@ -26,6 +26,7 @@ import DAO.TermDAO;
 import Database.Repository;
 import Database.StudentData;
 import Model.Term;
+import ViewUtils.ViewCreations;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -33,9 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private Repository repository;
     StudentData database;
     TermDAO termDAO;
-
-
-
     private ArrayList<Term> allTerms;
 
     @Override
@@ -52,9 +50,15 @@ public class MainActivity extends AppCompatActivity {
         for (Term term: allTerms){
             Term.addTerm(term);
         }
+        Log.d("Terms from db to app", String.valueOf(allTerms));
 
+        LinearLayout linearLayout = findViewById(R.id.termContainer);
 
-
+        for(Term term: allTerms){
+            Log.d("Term", String.valueOf(term.getId()));
+            RelativeLayout relativeLayout = ViewCreations.createTermRelativeLayout(this, term);
+            linearLayout.addView(relativeLayout);
+        }
         FloatingActionButton addTermButton = findViewById(R.id.floatingActionButton);
 
         addTermButton.setOnClickListener(new View.OnClickListener() {
@@ -68,9 +72,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showAddTermDialog() {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
         LayoutInflater inflater = this.getLayoutInflater();
 
         View dialogView = inflater.inflate(R.layout.term_input, null);
@@ -79,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
         final DatePicker startDatePicker = dialogView.findViewById(R.id.startDatePicker);
         final TextView endDateText = dialogView.findViewById(R.id.endDateText);
         final DatePicker endDatePicker = dialogView.findViewById(R.id.endDatePicker);
-
 
         builder.setView(dialogView);
         builder.setTitle("Add Term");
@@ -102,8 +103,15 @@ public class MainActivity extends AppCompatActivity {
 
                 Term newTerm = new Term(0, termTitle, startDate, endDate);
                 repository.insert(newTerm);
-                Log.d("Terms", repository.getmAllTerms().toString());
 
+                // Create a new RelativeLayout for the newly added term
+                RelativeLayout newTermLayout = ViewCreations.createTermRelativeLayout(MainActivity.this, newTerm);
+
+                // Add the new RelativeLayout to the LinearLayout
+                LinearLayout linearLayout = findViewById(R.id.termContainer);
+                linearLayout.addView(newTermLayout);
+
+                Log.d("Terms", repository.getmAllTerms().toString());
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -115,4 +123,5 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
 }

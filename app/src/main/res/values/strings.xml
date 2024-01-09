@@ -3,9 +3,11 @@
     <string name="_01_10_2024">01_10_2024</string>
     <string name="_01_01_24">01_01_24</string>
     <string name="term_2">Term_2</string>
-    <string name="term_1">term_1</string>
+    <string name="term_1">Term 1</string>
     <string name="term_3">Term_3</string>
-    <string name="enter_end_date">enter_end_date</string>
-    <string name="enter_start_date">enter_start_date</string>
-    <string name="enter_term">enter_term</string>
+    <string name="enter_end_date">Enter End Date</string>
+    <string name="enter_start_date">Enter End Date</string>
+    <string name="enter_term">Enter Term Name</string>
+    <string name="__01_01_24">01/01/24</string>
+    <string name="__01_10_2024">01/10/2024</string>
 </resources>
