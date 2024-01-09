@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import Model.Term;
+import pollock.student_scheduler_app.MainActivity;
 
 public class ViewCreations {
 
@@ -21,6 +22,7 @@ public class ViewCreations {
         // Set the layout parameters for the RelativeLayout
         relativeLayout.setLayoutParams(layoutParams);
         relativeLayout.setBackgroundColor(Color.parseColor("#00BCD4"));
+
 
 
         // Create and add TextViews to the RelativeLayout
@@ -37,6 +39,7 @@ public class ViewCreations {
         relativeLayout.addView(startDateTextView);
         relativeLayout.addView(endDateTextView);
         relativeLayout.addView(termNameTextView);
+
 
         return relativeLayout;
     }

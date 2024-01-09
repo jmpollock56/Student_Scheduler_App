@@ -8,21 +8,22 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import Model.Term;
+import Model.Assessment;
+
+
 @Dao
-public interface TermDAO {
+public interface AssessmentDAO {
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(Term term);
+    void insert(Assessment assessment);
 
     @Update
-    void update(Term term);
+    void update(Assessment assessment);
 
     @Delete
-    void delete(Term term);
+    void delete(Assessment assessment);
 
-    @Query("SELECT * FROM terms ORDER BY startDate ASC")
-    List<Term> getAllTerms();
-
+    @Query("SELECT * FROM assessments ORDER BY id ASC")
+    ArrayList<Assessment> getAllAssessments();
 }

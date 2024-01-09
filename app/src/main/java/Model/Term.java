@@ -12,8 +12,7 @@ import Database.StudentData;
 
 @Entity(tableName = "terms")
 public class Term {
-
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
     private int id;
     private String title;
     private LocalDate startDate;
@@ -40,11 +39,6 @@ public class Term {
         this.endDate = endDate;
     }
 
-    /**
-     public void addCourse(Course newCourse){
-     courses.add(newCourse);
-     }
-     */
     public static void addTerm(Term newTerm){
         allTerms.add(newTerm);
     }
@@ -64,11 +58,6 @@ public class Term {
         return endDate;
     }
 
-    /**
-     public ArrayList<Course> getCourses(){
-     return courses;
-     }
-     */
     public static ArrayList<Term> getTerms(){
         return allTerms;
     }

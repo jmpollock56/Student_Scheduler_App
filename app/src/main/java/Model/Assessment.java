@@ -2,6 +2,7 @@ package Model;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
@@ -10,7 +11,9 @@ import java.time.LocalDate;
         foreignKeys = @ForeignKey(entity = Course.class,
                 parentColumns = "id",
                 childColumns = "courseId",
-                onDelete = ForeignKey.RESTRICT))
+                onDelete = ForeignKey.RESTRICT),
+        indices = @Index(name = "index_courseId", value = {"courseId"})
+)
 
 public class Assessment {
     @PrimaryKey(autoGenerate = true)

@@ -2,6 +2,7 @@ package Model;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
@@ -16,6 +17,10 @@ import java.util.ArrayList;
                         parentColumns = "id",
                         childColumns = "instructorId",
                         onDelete = ForeignKey.CASCADE)
+        },
+        indices = {
+                @Index(name = "index_termId", value = {"termId"}),
+                @Index(name = "index_instructorId", value = {"instructorId"})
         })
 
 public class Course {
@@ -28,7 +33,6 @@ public class Course {
     private int instructorId; //fk
     private int termId; //fk
 
-    private ArrayList<Assessment> assignments;
 
     public Course(int id, String title, LocalDate startDate, LocalDate endDate, String status, int instructorId){
         this.id = id;
@@ -59,16 +63,12 @@ public class Course {
         this.status = status;
     }
 
-    public void setInstructorId(int Id){
+    public void setInstructorId(int instructorId){
         this.instructorId = instructorId;
     }
 
     public void setTermId(int termId) {
         this.termId = termId;
-    }
-
-    public void addAssignment(Assessment assignment){
-        assignments.add(assignment);
     }
 
     public int getId() {
@@ -97,10 +97,6 @@ public class Course {
 
     public int getTermId() {
         return termId;
-    }
-
-    public ArrayList<Assessment> getAssignments(){
-        return assignments;
     }
 
 }

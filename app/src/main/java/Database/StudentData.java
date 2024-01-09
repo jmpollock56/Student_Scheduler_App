@@ -11,10 +11,12 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import DAO.TermDAO;
+import Model.Assessment;
+import Model.Instructor;
 import Model.Term;
 import Model.Course;
 
-@Database(entities = {Term.class}, version = 1)
+@Database(entities = {Term.class, Course.class, Assessment.class, Instructor.class}, version = 3)
 @TypeConverters(DateConverter.class)
 public abstract class StudentData extends RoomDatabase {
     public abstract TermDAO termDAO();
