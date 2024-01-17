@@ -2,9 +2,13 @@ package Database;
 
 import androidx.room.TypeConverter;
 
+import java.lang.reflect.Type;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
+import Model.Course;
 
 public class DateConverter {
 
@@ -18,4 +22,5 @@ public class DateConverter {
     public static String fromLocalDate(LocalDate date){
         return date == null ? null : date.format(formatter);
     }
+
 }

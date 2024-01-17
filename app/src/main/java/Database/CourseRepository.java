@@ -3,28 +3,30 @@ package Database;
 import android.app.Application;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import DAO.CourseDAO;
 import DAO.TermDAO;
-import Model.Term;
+import Model.Course;
 
-public class Repository {
-    private TermDAO mTermDAO;
-    private ArrayList<Term> mAllTerms;
-    private Term term;
+
+public class CourseRepository {
+
+    private CourseDAO mCourseDAO;
+    private ArrayList<Course> mAllCourses;
+    private Course course;
     private static int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    public Repository(Application application){
+    public CourseRepository(Application application){
         StudentData db = StudentData.getDatabase(application);
-        mTermDAO = db.termDAO();
+        mCourseDAO = db.courseDAO();
     }
 
-    public ArrayList<Term> getmAllTerms(){
+    public ArrayList<Course> getmAllCourses(){
         databaseExecutor.execute(() -> {
-            mAllTerms = (ArrayList<Term>) mTermDAO.getAllTerms();
+            mAllCourses = (ArrayList<Course>) mCourseDAO.getAllCourses();
         });
 
         try {
@@ -33,24 +35,12 @@ public class Repository {
             throw new RuntimeException(e);
         }
 
-        return mAllTerms;
+        return mAllCourses;
     }
 
-    public void insert(Term term){
+    public void insertCourse(Course course){
         databaseExecutor.execute(() ->{
-            mTermDAO.insert(term);
-        });
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void update(Term term){
-        databaseExecutor.execute(() ->{
-            mTermDAO.update(term);
+            mCourseDAO.insert(course);
         });
 
         try {
@@ -60,9 +50,21 @@ public class Repository {
         }
     }
 
-    public void delete(Term term){
+    public void updateCourse(Course course){
         databaseExecutor.execute(() ->{
-            mTermDAO.delete(term);
+            mCourseDAO.update(course);
+        });
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteCourse(Course course){
+        databaseExecutor.execute(() ->{
+            mCourseDAO.delete(course);
         });
 
         try {

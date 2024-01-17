@@ -5,10 +5,9 @@ import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
-import DAO.TermDAO;
-import Database.Repository;
-import Database.StudentData;
+import Database.TermRepository;
 
 @Entity(tableName = "terms")
 public class Term {
@@ -43,6 +42,7 @@ public class Term {
         allTerms.add(newTerm);
     }
 
+
     public int getId(){
         return id;
     }
@@ -61,4 +61,5 @@ public class Term {
     public static ArrayList<Term> getTerms(){
         return allTerms;
     }
+
 }

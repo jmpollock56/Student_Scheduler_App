@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -7,8 +8,10 @@
 
     <RelativeLayout
         android:id="@+id/rL"
-        android:layout_width="409dp"
-        android:layout_height="729dp">
+        android:layout_width="396dp"
+        android:layout_height="737dp"
+        android:background="#4B00BCD4"
+        tools:layout_editor_absoluteX="-3dp">
 
         <TextView
             android:id="@+id/termTitle"
@@ -63,18 +66,38 @@
             android:text="11/31/24" />
 
         <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="634dp"
+            android:layout_width="386dp"
+            android:layout_height="644dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="2dp">
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="0dp">
 
             <LinearLayout
+                android:id="@+id/coursesContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </ScrollView>
+                android:orientation="vertical">
 
+
+            </LinearLayout>
+
+        </ScrollView>
     </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addCourseFAB"
+        android:layout_width="53dp"
+        android:layout_height="53dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add"
+        tools:ignore="MissingConstraints" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

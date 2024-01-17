@@ -11,4 +11,12 @@
     <string name="__01_01_24">01/01/24</string>
     <string name="__01_10_2024">01/10/2024</string>
     <string name="term_1_">Term 1</string>
+    <string name="enter_course_name">Enter Course Name</string>
+    <string name="enter_date_start">Enter Start Date</string>
+    <string name="enter_course_status">Enter Course Status</string>
+    <string name="enter_course_status_">Enter Course Status</string>
+    <string name="enter_instructor_name">Enter Instructor Name</string>
+    <string name="enter_instructor_phone_number">Enter Instructor Phone Number</string>
+    <string name="enter_instructor_email">Enter Instructor Email</string>
+    <string name="enter_a_note_optional">Enter a Note (Optional)</string>
 </resources>

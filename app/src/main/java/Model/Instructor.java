@@ -3,6 +3,9 @@ package Model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity(tableName = "instructors")
 public class Instructor {
 
@@ -11,6 +14,9 @@ public class Instructor {
     private String name;
     private String phoneNumber;
     private String emailAddress;
+
+
+    private static ArrayList<Instructor> allInstructors = new ArrayList<>();
 
     public Instructor(int id, String name, String phoneNumber, String emailAddress){
         this.id = id;
@@ -35,6 +41,10 @@ public class Instructor {
         this.emailAddress = emailAddress;
     }
 
+    public static void addInstructor(Instructor instructor){
+        allInstructors.add(instructor);
+    }
+
     public String getName(){
         return name;
     }
@@ -49,5 +59,9 @@ public class Instructor {
 
     public int getId() {
         return id;
+    }
+
+    public static ArrayList<Instructor> getAllInstructors(){
+        return allInstructors;
     }
 }

@@ -2,17 +2,16 @@ package ViewUtils;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import Model.Term;
-import pollock.student_scheduler_app.MainActivity;
+import Model.Course;
 
-public class ViewCreations {
 
-    public static RelativeLayout createTermRelativeLayout(Context context, Term term) {
+public class CourseViewCreation {
+
+    public static RelativeLayout createCourseRelativeLayout(Context context, Course course) {
         RelativeLayout relativeLayout = new RelativeLayout(context);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -26,19 +25,19 @@ public class ViewCreations {
 
 
         // Create and add TextViews to the RelativeLayout
-        TextView startDateTextView = createTextView(context, term.getStartDate().toString());
-        TextView endDateTextView = createTextView(context, term.getEndDate().toString());
-        TextView termNameTextView = createTextView(context, term.getTitle());
+        TextView startDateTextView = createTextView(context, course.getStartDate().toString());
+        TextView endDateTextView = createTextView(context, course.getEndDate().toString());
+        TextView courseNameTextView = createTextView(context, course.getTitle());
 
         // Set layout parameters for each TextView within the RelativeLayout
         setTextViewLayoutParams(startDateTextView, RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE);
         setTextViewLayoutParams(endDateTextView, RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
-        setTextViewLayoutParams(termNameTextView, RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        setTextViewLayoutParams(courseNameTextView, RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
 
         // Add TextViews to the RelativeLayout
         relativeLayout.addView(startDateTextView);
         relativeLayout.addView(endDateTextView);
-        relativeLayout.addView(termNameTextView);
+        relativeLayout.addView(courseNameTextView);
 
 
         return relativeLayout;

@@ -20,37 +20,39 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import DAO.TermDAO;
-import Database.Repository;
+import Database.TermRepository;
 import Database.StudentData;
+import Model.Course;
 import Model.Term;
-import ViewUtils.ViewCreations;
+import ViewUtils.TermViewCreation;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private Repository repository;
+    private TermRepository termRepository;
     StudentData database;
     TermDAO termDAO;
     FloatingActionButton addTermButton;
+
+    LinearLayout linearLayout;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        linearLayout = findViewById(R.id.termContainer);
 
         setDatabaseItems(); // setting up db items
         loadLocalArrayLists(); // load data from db into local storage
 
-        LinearLayout linearLayout = findViewById(R.id.termContainer);
+
 
         for(Term term: Term.getTerms()){
-           RelativeLayout relativeLayout = ViewCreations.createTermRelativeLayout(this, term);
+           RelativeLayout relativeLayout = TermViewCreation.createTermRelativeLayout(this, term);
 
             setTermClickListeners(relativeLayout, term);
 
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
+
                 String termTitle = editTextTerm.getText().toString();
 
                 int startYear = startDatePicker.getYear();
@@ -97,16 +100,16 @@ public class MainActivity extends AppCompatActivity {
                 int termId = random.nextInt(10000);
 
                 Term newTerm = new Term(termId, termTitle, startDate, endDate);
-                repository.insert(newTerm);
+                termRepository.insertTerm(newTerm);
                 loadLocalArrayLists();
 
                 // Create a new RelativeLayout for the newly added term
-                RelativeLayout newTermLayout = ViewCreations.createTermRelativeLayout(MainActivity.this, newTerm);
+                RelativeLayout newTermLayout = TermViewCreation.createTermRelativeLayout(MainActivity.this, newTerm);
 
                setTermClickListeners(newTermLayout, newTerm);
 
                 // Add the new RelativeLayout to the LinearLayout
-                LinearLayout linearLayout = findViewById(R.id.termContainer);
+
                 linearLayout.addView(newTermLayout);
 
             }
@@ -135,19 +138,19 @@ public class MainActivity extends AppCompatActivity {
         database = Room.databaseBuilder(this, StudentData.class, "StudentScheduleDatabase.db")
                 .build();
         termDAO = database.termDAO();
-        repository = new Repository(getApplication());
+        termRepository = new TermRepository(getApplication());
     }
 
     private void loadLocalArrayLists(){
 
-        for (Term term: repository.getmAllTerms()){
+        for (Term term: termRepository.getmAllTerms()){
             Term.addTerm(term);
         }
-
     }
 
     private void setTermClickListeners(RelativeLayout rL, final Term term){
         rL.setTag(term);
+        rL.setId(term.getId());
         rL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,8 +159,6 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(MainActivity.this, TermExpandedActivity.class);
                 startActivity(intent);
-
-                Log.d("Term", String.valueOf(selectedTerm.getId()));
             }
         });
     }

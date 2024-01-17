@@ -8,6 +8,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Model.Assessment;
 
@@ -25,5 +26,5 @@ public interface AssessmentDAO {
     void delete(Assessment assessment);
 
     @Query("SELECT * FROM assessments ORDER BY id ASC")
-    ArrayList<Assessment> getAllAssessments();
+    List<Assessment> getAllAssessments();
 }

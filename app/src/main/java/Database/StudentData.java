@@ -10,16 +10,22 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import DAO.AssessmentDAO;
+import DAO.CourseDAO;
+import DAO.InstructorDAO;
 import DAO.TermDAO;
 import Model.Assessment;
 import Model.Instructor;
 import Model.Term;
 import Model.Course;
 
-@Database(entities = {Term.class, Course.class, Assessment.class, Instructor.class}, version = 3)
+@Database(entities = {Term.class, Course.class, Assessment.class, Instructor.class}, version = 8)
 @TypeConverters(DateConverter.class)
 public abstract class StudentData extends RoomDatabase {
     public abstract TermDAO termDAO();
+    public abstract CourseDAO courseDAO();
+    public abstract AssessmentDAO assessmentDAO();
+    public abstract InstructorDAO instructorDAO();
     private static volatile StudentData INSTANCE;
 
 

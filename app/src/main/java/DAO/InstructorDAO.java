@@ -10,22 +10,21 @@ import androidx.room.Update;
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.Course;
 
+import Model.Instructor;
 
 @Dao
-public interface CourseDAO {
+public interface InstructorDAO {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(Course course);
+    void insert(Instructor instructor);
 
     @Update
-    void update(Course course);
+    void update(Instructor instructor);
 
     @Delete
-    void delete(Course course);
+    void delete(Instructor instructor);
 
-    @Query("SELECT * FROM courses")
-    List<Course> getAllCourses();
-
+    @Query("SELECT * FROM instructors ORDER BY id ASC")
+    List<Instructor> getAllInstructors();
 }

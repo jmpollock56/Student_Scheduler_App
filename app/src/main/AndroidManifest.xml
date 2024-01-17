@@ -25,6 +25,9 @@
         <activity android:name=".TermExpandedActivity">
 
         </activity>
+        <activity android:name=".CourseExpandedActivity">
+
+        </activity>
     </application>
 
 

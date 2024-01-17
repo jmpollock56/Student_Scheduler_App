@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <EditText
+                android:id="@+id/editTextCourse"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:hint="@string/enter_course_name" />
+
+            <TextView
+                android:id="@+id/startDateCourseText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/enter_date_start"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp" />
+
+            <DatePicker
+                android:id="@+id/startDateCoursePicker"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:datePickerMode="spinner"
+                android:calendarViewShown="false" />
+
+            <TextView
+                android:id="@+id/endDateCourseText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/enter_end_date"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp" />
+
+            <DatePicker
+                android:id="@+id/endDateCoursePicker"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:datePickerMode="spinner"
+                android:calendarViewShown="false" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/enter_course_status_"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/statusSpinner" >
+            </Spinner>
+
+            <EditText
+                android:id="@+id/instructorName"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:hint="@string/enter_instructor_name" />
+
+            <EditText
+                android:id="@+id/instructorNumber"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:hint="@string/enter_instructor_phone_number" />
+
+            <EditText
+                android:id="@+id/instructorEmail"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:hint="@string/enter_instructor_email" />
+
+            <EditText
+                android:id="@+id/optionalNote"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:hint="@string/enter_a_note_optional" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
