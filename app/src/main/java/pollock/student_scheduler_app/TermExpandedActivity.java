@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -22,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Random;
 
 import Database.CourseRepository;
@@ -30,16 +32,17 @@ import Model.Course;
 import Model.Instructor;
 import Model.Term;
 import ViewUtils.CourseViewCreation;
+import ViewUtils.TermViewCreation;
 
 
 public class TermExpandedActivity extends AppCompatActivity {
 
-    private static Term selectedTerm;
+    static Term selectedTerm;
+    Course selectedCourse;
     private FloatingActionButton addCourseButton;
 
     private CourseRepository courseRepository;
     private InstructorRepository instructorRepository;
-    GestureDetector gestureDetector;
     LinearLayout linearLayout;
     String[] statusOptions = {"In Progress", "Completed", "Dropped", "Plan to Take"};
     @Override
@@ -50,6 +53,7 @@ public class TermExpandedActivity extends AppCompatActivity {
 
         courseRepository = new CourseRepository(getApplication());
         instructorRepository = new InstructorRepository(getApplication());
+
 
         RelativeLayout relativeLayout = findViewById(R.id.rL);
         linearLayout = findViewById(R.id.coursesContainer);
@@ -67,16 +71,9 @@ public class TermExpandedActivity extends AppCompatActivity {
         addClickListenerToFAB();
         loadLocalArrayLists();
 
-        for(Course course: courseRepository.getmAllCourses()){
-            if (course.getTermId() == selectedTerm.getId()){
-                RelativeLayout rL = CourseViewCreation.createCourseRelativeLayout(this, course);
+        ArrayList<RelativeLayout> courseLayouts = loadLocalArrayLists();
+        refreshLinearLayout(courseLayouts);
 
-                setCourseClickListeners(rL, course);
-                rL.setTag(course);
-                linearLayout.addView(rL);
-            }
-
-        }
 
     }
 
@@ -133,12 +130,12 @@ public class TermExpandedActivity extends AppCompatActivity {
 
                   LocalDate courseEndDate = LocalDate.of(endYear, endMonth, endDayOfMonth);
 
-                  String status = statusSpinner.toString();
+                  String status = statusSpinner.getSelectedItem().toString();
 
-                  String inName = instructorNameText.toString();
-                  String inNumber = instructorNumberText.toString();
-                  String inEmail = instructorEmailText.toString();
-                  String note = optionalNote.toString();
+                  String inName = instructorNameText.getText().toString();
+                  String inNumber = instructorNumberText.getText().toString();
+                  String inEmail = instructorEmailText.getText().toString();
+                  String note = optionalNote.getText().toString();
 
                   Random random = new Random();
 
@@ -148,9 +145,9 @@ public class TermExpandedActivity extends AppCompatActivity {
                   Course course = new Course(courseId, courseName, courseStartDate, courseEndDate, status, note, instructorId, selectedTerm.getId());
                   Instructor instructor = new Instructor(instructorId, inName, inNumber, inEmail);
 
-
-                  courseRepository.insertCourse(course);
                   instructorRepository.insertInstructor(instructor);
+                  courseRepository.insertCourse(course);
+
 
                   loadLocalArrayLists();
 
@@ -175,17 +172,15 @@ public class TermExpandedActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void loadLocalArrayLists(){
+    private ArrayList<RelativeLayout> loadLocalArrayLists(){
+        ArrayList<RelativeLayout> courseLayouts = new ArrayList<>();
 
-        for(Course course: courseRepository.getmAllCourses()){
-            Course.addCourse(course);
+        for (Course course: courseRepository.getmAllCourses()){
+            RelativeLayout relativeLayout = createCourseLayout(course);
+            courseLayouts.add(relativeLayout);
         }
 
-        for (Instructor instructor: instructorRepository.getmAllInstructors()){
-            Instructor.addInstructor(instructor);
-        }
-
-
+        return courseLayouts;
     }
 
     private void setCourseClickListeners(RelativeLayout rL, final Course course){
@@ -193,16 +188,92 @@ public class TermExpandedActivity extends AppCompatActivity {
         rL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Course selectedCourse = (Course) v.getTag();
-                CourseExpandedActivity.getCourseInfo(selectedCourse);
+                Course course = (Course) v.getTag();
 
-                Intent intent = new Intent(TermExpandedActivity.this, CourseExpandedActivity.class);
-                startActivity(intent);
-
-
+                showCourseOptions(course);
             }
         });
     }
+
+    private void showCourseOptions(Course course){
+        selectedCourse = course;
+
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        View dialogView = inflater.inflate(R.layout.course_options, null);
+
+
+
+        builder2.setView(dialogView);
+        builder2.setTitle("Add Course");
+
+        Button viewOption = dialogView.findViewById(R.id.viewCourseBtn);
+        Button editOption = dialogView.findViewById(R.id.editCourseBtn);
+        Button deleteOption = dialogView.findViewById(R.id.deleteCourseBtn);
+
+        builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog2 = builder2.create();
+
+        viewOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CourseExpandedActivity.getCourseInfo(selectedCourse);
+                alertDialog2.dismiss();
+
+                Intent intent = new Intent(TermExpandedActivity.this, CourseExpandedActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        deleteOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                courseRepository.deleteCourse(selectedCourse);
+                ArrayList<RelativeLayout> updatedCourseLayouts = loadLocalArrayLists();
+                refreshLinearLayout(updatedCourseLayouts);
+                alertDialog2.dismiss();
+
+            }
+        });
+
+        editOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CourseEditActivity.getSelectedCourse(selectedCourse);
+                alertDialog2.dismiss();
+
+                Intent intent = new Intent(TermExpandedActivity.this, CourseEditActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        alertDialog2.show();
+    }
+
+    private RelativeLayout createCourseLayout(Course course) {
+        RelativeLayout relativeLayout = CourseViewCreation.createCourseRelativeLayout(this, course);
+        setCourseClickListeners(relativeLayout, course);
+        relativeLayout.setTag(course);
+        return relativeLayout;
+    }
+
+    private void refreshLinearLayout(ArrayList<RelativeLayout> termLayouts) {
+        linearLayout.removeAllViews(); // Remove all views from the LinearLayout
+
+        // Re-add the updated views
+        for (RelativeLayout termLayout : termLayouts) {
+            linearLayout.addView(termLayout);
+        }
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

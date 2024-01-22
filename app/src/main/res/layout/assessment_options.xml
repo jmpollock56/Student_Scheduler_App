@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#4B00BCD4">
+
+    <LinearLayout
+        android:layout_width="345dp"
+        android:layout_height="724dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="7dp">
+
+        <Button
+            android:id="@+id/viewAssBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#009688"
+            android:text="View Assessment" />
+
+        <Button
+            android:id="@+id/editAssBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#009688"
+            android:text="Edit Assessment" />
+
+        <Button
+            android:id="@+id/deleteAssBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#009688"
+            android:text="Delete Assessment" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

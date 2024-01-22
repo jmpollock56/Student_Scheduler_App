@@ -6,12 +6,13 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Entity(tableName = "assessments",
         foreignKeys = @ForeignKey(entity = Course.class,
                 parentColumns = "id",
                 childColumns = "courseId",
-                onDelete = ForeignKey.RESTRICT),
+                onDelete = ForeignKey.CASCADE),
         indices = @Index(name = "index_courseId", value = {"courseId"})
 )
 
@@ -22,6 +23,8 @@ public class Assessment {
     private String title;
     private LocalDate endDate;
     private int courseId; //fk
+
+    public static ArrayList<Assessment> allAssessments = new ArrayList<>();
 
     public Assessment(int id, String type, String title, LocalDate endDate, int courseId){
         this.id = id;
@@ -51,6 +54,10 @@ public class Assessment {
         this.courseId = courseId;
     }
 
+    public static void addAssessment(Assessment assessment){
+        allAssessments.add(assessment);
+    }
+
     public int getId() {
         return id;
     }
@@ -69,5 +76,9 @@ public class Assessment {
 
     public int getCourseId() {
         return courseId;
+    }
+
+    public static ArrayList<Assessment> getAllAssessments(){
+        return allAssessments;
     }
 }

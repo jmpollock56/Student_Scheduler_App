@@ -15,40 +15,38 @@
             android:padding="10dp">
 
             <EditText
-                android:id="@+id/editTextCourse"
+                android:id="@+id/editCourseName"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:hint="@string/enter_course_name" />
 
             <TextView
-                android:id="@+id/startDateCourseText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
                 android:paddingBottom="4dp"
                 android:text="@string/enter_date_start"
-                android:textColor="@android:color/black"
+                android:textColor="#FFFFFFFF"
                 android:textSize="18sp" />
 
             <DatePicker
-                android:id="@+id/startDateCoursePicker"
+                android:id="@+id/editCourseStartDate"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:calendarViewShown="false"
                 android:datePickerMode="spinner" />
 
             <TextView
-                android:id="@+id/endDateCourseText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
                 android:paddingBottom="4dp"
                 android:text="@string/enter_end_date"
-                android:textColor="@android:color/black"
+                android:textColor="#FFFFFFFF"
                 android:textSize="18sp" />
 
             <DatePicker
-                android:id="@+id/endDateCoursePicker"
+                android:id="@+id/editCourseEndDate"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:calendarViewShown="false"
@@ -60,11 +58,11 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="4dp"
                 android:text="@string/enter_course_status_"
-                android:textColor="@android:color/black"
+                android:textColor="#FFFFFFFF"
                 android:textSize="18sp" />
 
             <Spinner
-                android:id="@+id/statusSpinner"
+                android:id="@+id/editCourseStatus"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"></Spinner>
 
@@ -92,8 +90,16 @@
                 android:layout_height="120dp"
                 android:hint="@string/enter_a_note_optional" />
 
+            <Button
+                android:id="@+id/editSaveBtn"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="120dp"
+                android:backgroundTint="#009688"
+                android:text="Save"
+                android:textAlignment="center" />
+
         </LinearLayout>
     </ScrollView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

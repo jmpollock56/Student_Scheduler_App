@@ -9,7 +9,7 @@ import java.util.List;
 @Entity(tableName = "instructors")
 public class Instructor {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
     private int id;
     private String name;
     private String phoneNumber;

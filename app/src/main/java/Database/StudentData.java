@@ -19,7 +19,7 @@ import Model.Instructor;
 import Model.Term;
 import Model.Course;
 
-@Database(entities = {Term.class, Course.class, Assessment.class, Instructor.class}, version = 8)
+@Database(entities = {Term.class, Course.class, Assessment.class, Instructor.class}, version = 11)
 @TypeConverters(DateConverter.class)
 public abstract class StudentData extends RoomDatabase {
     public abstract TermDAO termDAO();

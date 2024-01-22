@@ -28,6 +28,21 @@
         <activity android:name=".CourseExpandedActivity">
 
         </activity>
+        <activity android:name=".TermEditActivity">
+
+        </activity>
+        <activity android:name=".CourseEditActivity">
+
+        </activity>
+        <activity android:name=".AssessmentEditActivity">
+
+        </activity>
+        <activity android:name=".AssessmentExpandedActivity">
+
+        </activity>
+        <activity android:name=".AssessmentShowActivity">
+
+        </activity>
     </application>
 
 

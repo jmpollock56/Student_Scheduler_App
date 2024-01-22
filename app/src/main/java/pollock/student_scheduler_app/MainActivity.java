@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -20,9 +21,12 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import DAO.TermDAO;
+import Database.CourseRepository;
 import Database.TermRepository;
 import Database.StudentData;
 import Model.Course;
@@ -33,34 +37,29 @@ import ViewUtils.TermViewCreation;
 public class MainActivity extends AppCompatActivity {
 
     private TermRepository termRepository;
+    private CourseRepository courseRepository;
     StudentData database;
     TermDAO termDAO;
     FloatingActionButton addTermButton;
-
+    Term selectedTerm;
     LinearLayout linearLayout;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         linearLayout = findViewById(R.id.termContainer);
 
-        setDatabaseItems(); // setting up db items
-        loadLocalArrayLists(); // load data from db into local storage
+        setDatabaseItems();
 
+        ArrayList<RelativeLayout> termLayouts = loadLocalArrayLists();
+        refreshLinearLayout(termLayouts);
 
-
-        for(Term term: Term.getTerms()){
-           RelativeLayout relativeLayout = TermViewCreation.createTermRelativeLayout(this, term);
-
-            setTermClickListeners(relativeLayout, term);
-
-            relativeLayout.setTag(term);
-            linearLayout.addView(relativeLayout);
-        }
-
-        addClickListenerToFAB(); // add click listener to FloatingActionButton
+        addClickListenerToFAB();
 
     }
 
@@ -70,9 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         View dialogView = inflater.inflate(R.layout.term_input, null);
         final EditText editTextTerm = dialogView.findViewById(R.id.editTextTerm);
-        final TextView startDateText = dialogView.findViewById(R.id.startDateText);
         final DatePicker startDatePicker = dialogView.findViewById(R.id.startDatePicker);
-        final TextView endDateText = dialogView.findViewById(R.id.endDateText);
         final DatePicker endDatePicker = dialogView.findViewById(R.id.endDatePicker);
 
         builder.setView(dialogView);
@@ -101,14 +98,14 @@ public class MainActivity extends AppCompatActivity {
 
                 Term newTerm = new Term(termId, termTitle, startDate, endDate);
                 termRepository.insertTerm(newTerm);
-                loadLocalArrayLists();
 
-                // Create a new RelativeLayout for the newly added term
+
+
                 RelativeLayout newTermLayout = TermViewCreation.createTermRelativeLayout(MainActivity.this, newTerm);
 
-               setTermClickListeners(newTermLayout, newTerm);
+                setTermClickListeners(newTermLayout, newTerm);
 
-                // Add the new RelativeLayout to the LinearLayout
+
 
                 linearLayout.addView(newTermLayout);
 
@@ -123,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
 
     private void addClickListenerToFAB(){
         addTermButton = findViewById(R.id.floatingActionButton);
@@ -141,11 +139,84 @@ public class MainActivity extends AppCompatActivity {
         termRepository = new TermRepository(getApplication());
     }
 
-    private void loadLocalArrayLists(){
+    private ArrayList<RelativeLayout> loadLocalArrayLists() {
+        ArrayList<RelativeLayout> termLayouts = new ArrayList<>();
 
-        for (Term term: termRepository.getmAllTerms()){
-            Term.addTerm(term);
+        for (Term term : termRepository.getmAllTerms()) {
+            RelativeLayout relativeLayout = createTermLayout(term);
+            termLayouts.add(relativeLayout);
         }
+
+        return termLayouts;
+
+
+    }
+
+
+    private void showTermOptions(Term term){
+
+        selectedTerm = term;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.term_options, null);
+
+        builder.setView(dialogView);
+        builder.setTitle("Term Options");
+
+        Button viewTermBtn = dialogView.findViewById(R.id.viewTermBtn);
+        Button editTermBtn = dialogView.findViewById(R.id.editTermBtn);
+        Button deleteTermBtn = dialogView.findViewById(R.id.deleteTermBtn);
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+
+        viewTermBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //TODO: check if there are courses associated with this term.
+
+
+                TermExpandedActivity.getTermInfo(selectedTerm);
+
+                Intent intent = new Intent(MainActivity.this, TermExpandedActivity.class);
+                startActivity(intent);
+
+                alertDialog.dismiss();
+            }
+        });
+
+        deleteTermBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                termRepository.deleteTerm(selectedTerm);
+                alertDialog.dismiss();
+
+                // Reload the LinearLayout with the updated data
+                ArrayList<RelativeLayout> updatedTermLayouts = loadLocalArrayLists();
+                refreshLinearLayout(updatedTermLayouts);
+
+            }
+        });
+
+        editTermBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TermEditActivity.getSelectedTerm(selectedTerm);
+
+                Intent intent = new Intent(MainActivity.this, TermEditActivity.class);
+                startActivity(intent);
+
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 
     private void setTermClickListeners(RelativeLayout rL, final Term term){
@@ -154,13 +225,32 @@ public class MainActivity extends AppCompatActivity {
         rL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Term selectedTerm = (Term) v.getTag();
-                TermExpandedActivity.getTermInfo(selectedTerm);
+                Term term = (Term) v.getTag();
+                showTermOptions(term);
 
-                Intent intent = new Intent(MainActivity.this, TermExpandedActivity.class);
-                startActivity(intent);
             }
         });
     }
+
+
+    private RelativeLayout createTermLayout(Term term) {
+        RelativeLayout relativeLayout = TermViewCreation.createTermRelativeLayout(this, term);
+        setTermClickListeners(relativeLayout, term);
+        relativeLayout.setTag(term);
+        return relativeLayout;
+    }
+
+    private void refreshLinearLayout(ArrayList<RelativeLayout> termLayouts) {
+        linearLayout.removeAllViews(); // Remove all views from the LinearLayout
+
+        // Re-add the updated views
+        for (RelativeLayout termLayout : termLayouts) {
+            linearLayout.addView(termLayout);
+        }
+    }
+
+
+
+
 
 }

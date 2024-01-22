@@ -15,10 +15,15 @@ import ViewUtils.CourseViewCreation;
                 @ForeignKey(entity = Term.class,
                         parentColumns = "id",
                         childColumns = "termId",
-                        onDelete = ForeignKey.RESTRICT)
+                        onDelete = ForeignKey.RESTRICT),
+                @ForeignKey(entity = Instructor.class,
+                        parentColumns = "id",
+                        childColumns = "instructorId",
+                        onDelete = ForeignKey.CASCADE)
         },
         indices = {
                 @Index(name = "index_termId", value = {"termId"}),
+                @Index(name = "index_instructorId", value = {"instructorId"})
         })
 
 public class Course {

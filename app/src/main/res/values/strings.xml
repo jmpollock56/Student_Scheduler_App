@@ -19,4 +19,8 @@
     <string name="enter_instructor_phone_number">Enter Instructor Phone Number</string>
     <string name="enter_instructor_email">Enter Instructor Email</string>
     <string name="enter_a_note_optional">Enter a Note (Optional)</string>
+    <string name="type_of_assessment">Type of Assessment</string>
+    <string name="assessment_name">Assessment Name</string>
+    <string name="start_date_ass">Start Date</string>
+    <string name="end_date_ass">End Date</string>
 </resources>
