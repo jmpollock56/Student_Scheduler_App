@@ -44,9 +44,6 @@ public class MainActivity extends AppCompatActivity {
     Term selectedTerm;
     LinearLayout linearLayout;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         addClickListenerToFAB();
 
     }
+
+
 
     private void showAddTermDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -152,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     private void showTermOptions(Term term){
 
         selectedTerm = term;
@@ -231,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private RelativeLayout createTermLayout(Term term) {
         RelativeLayout relativeLayout = TermViewCreation.createTermRelativeLayout(this, term);

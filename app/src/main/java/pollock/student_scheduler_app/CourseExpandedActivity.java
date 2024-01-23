@@ -27,20 +27,18 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import Database.AssessmentRepository;
-import Database.CourseRepository;
 import Database.InstructorRepository;
 import Model.Assessment;
 import Model.Course;
 import Model.Instructor;
-import Model.Term;
 import ViewUtils.AssessmentViewCreation;
-import ViewUtils.CourseViewCreation;
-import ViewUtils.TermViewCreation;
 
 public class CourseExpandedActivity extends AppCompatActivity {
 
     static Course selectedCourse;
     Assessment selectedAssessment;
+    Instructor associatedInstructor;
+    InstructorRepository instructorRepository;
     FloatingActionButton addAssessmentBtn;
     String[] assessmentSpinnerOptions = {"Performance Assessment", "Objective Assessment"};
     AssessmentRepository assessmentRepository;
@@ -50,9 +48,10 @@ public class CourseExpandedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.course_expanded);
-        RelativeLayout relativeLayout = findViewById(R.id.header);
+
 
         assessmentRepository = new AssessmentRepository(getApplication());
+        instructorRepository = new InstructorRepository(getApplication());
 
         assessmentLinearLayout = findViewById(R.id.assessmentList);
 
@@ -60,14 +59,26 @@ public class CourseExpandedActivity extends AppCompatActivity {
         refreshLinearLayout(assessmentLayouts);
 
         addClickListenerToFAB();
+        findInstructor();
 
-        final TextView courseName = relativeLayout.findViewById(R.id.courseName);
-        final TextView courseStartDate = relativeLayout.findViewById(R.id.courseStartDate);
-        final TextView courseEndDate = relativeLayout.findViewById(R.id.courseEndDate);
+        final TextView courseName = findViewById(R.id.courseName);
+        final TextView courseStartDate = findViewById(R.id.courseStartDate);
+        final TextView courseEndDate = findViewById(R.id.courseEndDate);
+        final TextView courseStatus = findViewById(R.id.courseStatus);
+        final TextView instructorNameDetail = findViewById(R.id.instructorNameDetail);
+        final TextView instructorNumberDetail = findViewById(R.id.instructorNumberDetail);
+        final TextView instructorEmailDetail = findViewById(R.id.instructorEmailDetail);
+        final TextView courseNotesDetail = findViewById(R.id.courseNoteDetail);
+
 
         courseName.setText( String.valueOf(selectedCourse.getTitle()));
-        courseStartDate.setText("Start Date: \n" +selectedCourse.getStartDate());
-        courseEndDate.setText("End Date: \n" + selectedCourse.getEndDate());
+        courseStartDate.setText(selectedCourse.getStartDate().toString());
+        courseEndDate.setText(selectedCourse.getEndDate().toString());
+        courseStatus.setText(selectedCourse.getStatus());
+        instructorNameDetail.setText(associatedInstructor.getName());
+        instructorNumberDetail.setText(associatedInstructor.getPhoneNumber());
+        instructorEmailDetail.setText(associatedInstructor.getEmailAddress());
+        courseNotesDetail.setText(selectedCourse.getNote());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -76,6 +87,16 @@ public class CourseExpandedActivity extends AppCompatActivity {
 
     public static void getCourseInfo(Course course){
         selectedCourse = course;
+
+    }
+
+    private void findInstructor(){
+        //get Instructor
+        for (Instructor instructor: instructorRepository.getmAllInstructors()){
+            if (selectedCourse.getInstructorId() == instructor.getId()){
+                associatedInstructor = instructor;
+            }
+        }
     }
 
     private void addClickListenerToFAB(){
