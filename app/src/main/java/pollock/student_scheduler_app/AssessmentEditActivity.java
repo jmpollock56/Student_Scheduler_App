@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,6 +60,11 @@ public class AssessmentEditActivity extends AppCompatActivity {
     private void saveAssessmentEdit(){
         String type = assessmentTypeSpinner.getSelectedItem().toString();
         String name = assessmentName.getText().toString();
+
+        if (name.isEmpty()){
+            Toast.makeText(getApplicationContext(), "Please give the assessment a name.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         int endYear = assessmentEndDate.getYear();
         int endMonth = assessmentEndDate.getMonth() + 1;

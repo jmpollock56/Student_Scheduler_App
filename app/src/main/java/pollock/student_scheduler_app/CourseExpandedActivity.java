@@ -1,10 +1,14 @@
 package pollock.student_scheduler_app;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.os.health.SystemHealthManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,12 +26,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
 
 import Database.AssessmentRepository;
 import Database.InstructorRepository;
+import ExtraOptions.Alert;
 import Model.Assessment;
 import Model.Course;
 import Model.Instructor;
@@ -90,6 +96,12 @@ public class CourseExpandedActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_term_expanded, menu);
+        return true;
+    }
+
     private void findInstructor(){
         //get Instructor
         for (Instructor instructor: instructorRepository.getmAllInstructors()){
@@ -125,15 +137,13 @@ public class CourseExpandedActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int id) {
 
-
                 final EditText assessmentName = dialogView.findViewById(R.id.assessmentTitleInput);
                 final DatePicker assessmentEndDate = dialogView.findViewById(R.id.assessmentEndDate);
                 String assessmentType = assessmentTypeSpinner.getSelectedItem().toString();
 
-                if (TextUtils.isEmpty(assessmentName.getText().toString())) {
-
-                    Toast.makeText(getApplicationContext(), "Please enter the assessment name", Toast.LENGTH_SHORT).show();
-
+                if (assessmentName.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Please give the assessment a name.", Toast.LENGTH_LONG).show();
+                    return;
                 }
 
 
@@ -160,11 +170,7 @@ public class CourseExpandedActivity extends AppCompatActivity {
 
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton("Cancel", (dialog, id) -> dialog.cancel());
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
@@ -196,7 +202,7 @@ public class CourseExpandedActivity extends AppCompatActivity {
         viewAssessment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AssessmentExpandedActivity.getSelectedAssessment(selectedAssessment);
+                AssessmentExpandedActivity.getSelectedAssessment(selectedAssessment, selectedCourse);
 
                 Intent intent = new Intent(CourseExpandedActivity.this, AssessmentExpandedActivity.class);
                 startActivity(intent);
@@ -230,18 +236,105 @@ public class CourseExpandedActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-
     private ArrayList<RelativeLayout> loadLocalArrayLists() {
         ArrayList<RelativeLayout> assessmentLayouts = new ArrayList<>();
 
         for (Assessment assessment : assessmentRepository.getmAllAssessments()) {
-            RelativeLayout relativeLayout = createAssessmentLayout(assessment);
-            assessmentLayouts.add(relativeLayout);
+            if (assessment.getCourseId() == selectedCourse.getId()){
+                RelativeLayout relativeLayout = createAssessmentLayout(assessment);
+                assessmentLayouts.add(relativeLayout);
+            }
         }
-
         return assessmentLayouts;
+    }
+
+    private void showAlertOptions(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        View dialogView = inflater.inflate(R.layout.set_alerts, null);
+
+        builder.setView(dialogView);
+        builder.setTitle("Alert Options");
+
+        Button startDateAlertBtn = dialogView.findViewById(R.id.startDateAlert);
+        Button endDateAlertBtn = dialogView.findViewById(R.id.endDateAlert);
 
 
+        TextView selectedObject = dialogView.findViewById(R.id.selectedObject);
+        selectedObject.setText(selectedCourse.getTitle());
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+
+        startDateAlertBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Random random = new Random();
+                int numAlert = random.nextInt(100000000);
+                LocalDate chosenStartDate = selectedCourse.getStartDate();
+                System.out.println(selectedCourse.getTitle());
+                Date chosenDate = java.sql.Date.valueOf(String.valueOf(chosenStartDate));
+                System.out.println(chosenDate);
+                long trigger = chosenDate.getTime();
+                System.out.println(trigger);
+
+
+                Intent intent = new Intent(CourseExpandedActivity.this, Alert.class);
+                intent.setAction("ExtraOptions.Alert.ACTION_ALERT");
+                intent.putExtra("key", selectedCourse.getTitle() + " starts today!");
+
+                String contentText = " starts today!";
+                String contentTitle = "A Course has started!";
+                Alert.getCourse(selectedCourse, contentText, contentTitle);
+
+                PendingIntent sender = PendingIntent.getBroadcast(CourseExpandedActivity.this, numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+
+                Toast.makeText(getApplicationContext(), "Alert set for " + selectedCourse.getTitle() + " at " + selectedCourse.getStartDate(), Toast.LENGTH_LONG).show();
+                //alertDialog.dismiss();
+            }
+        });
+
+        endDateAlertBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Random random = new Random();
+                int numAlert = random.nextInt(100000000);
+                LocalDate chosenEndDate = selectedCourse.getEndDate();
+                Date chosenDate = java.sql.Date.valueOf(String.valueOf(chosenEndDate));
+                long trigger = chosenDate.getTime();
+                System.out.println(trigger);
+
+
+                Intent intent = new Intent(CourseExpandedActivity.this, Alert.class);
+                intent.setAction("ExtraOptions.Alert.ACTION_ALERT");
+                intent.putExtra("key", selectedCourse.getTitle() + " ends today!");
+
+                String contentText = " ends today!";
+                String contentTitle = "A Course is Ending!";
+                Alert.getCourse(selectedCourse, contentText, contentTitle);
+
+                PendingIntent sender = PendingIntent.getBroadcast(CourseExpandedActivity.this, numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+
+                Toast.makeText(getApplicationContext(), "Alert set for " + selectedCourse.getTitle() + " at " + selectedCourse.getEndDate(), Toast.LENGTH_LONG).show();
+
+
+                //alertDialog.dismiss();
+            }
+        });
+
+
+
+        alertDialog.show();
     }
 
     private void setAssessmentClickListeners(RelativeLayout rL, final Assessment assessment){
@@ -263,9 +356,8 @@ public class CourseExpandedActivity extends AppCompatActivity {
     }
 
     private void refreshLinearLayout(ArrayList<RelativeLayout> assessmentLayouts) {
-        assessmentLinearLayout.removeAllViews(); // Remove all views from the LinearLayout
+        assessmentLinearLayout.removeAllViews();
 
-        // Re-add the updated views
         for (RelativeLayout assessmentLayout : assessmentLayouts) {
             assessmentLinearLayout.addView(assessmentLayout);
         }
@@ -275,6 +367,21 @@ public class CourseExpandedActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();  // Go back when the back button is pressed
+            return true;
+        } else if (item.getItemId() == R.id.setCourseAlert) {
+            System.out.println("Set Course Alert");
+            showAlertOptions();
+            return true;
+
+        } else if (item.getItemId() == R.id.shareNotes) {
+            Intent sentIntent = new Intent();
+            sentIntent.setAction(Intent.ACTION_SEND);
+            sentIntent.putExtra(Intent.EXTRA_TEXT, selectedCourse.getNote());
+            sentIntent.putExtra(Intent.EXTRA_TITLE, "Note from " + selectedCourse.getTitle());
+            sentIntent.setType("text/plain");
+            Intent shareIntent = Intent.createChooser(sentIntent, null);
+            startActivity(shareIntent);
+            System.out.println("Share Notes");
             return true;
         }
         return super.onOptionsItemSelected(item);

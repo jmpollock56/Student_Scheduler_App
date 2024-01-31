@@ -16,6 +16,7 @@ public class AssessmentViewCreation {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 80 * (int) context.getResources().getDisplayMetrics().density
         );
+        layoutParams.setMargins(0,0,0,10);
 
         // Set the layout parameters for the RelativeLayout
         relativeLayout.setLayoutParams(layoutParams);
@@ -27,6 +28,8 @@ public class AssessmentViewCreation {
         TextView typeTextView = createTextView(context, assessment.getType());
         TextView endDateTextView = createTextView(context, assessment.getEndDate().toString());
         TextView courseNameTextView = createTextView(context, assessment.getTitle());
+
+        typeTextView.setTextSize(10);
 
         // Set layout parameters for each TextView within the RelativeLayout
         setTextViewLayoutParams(typeTextView, RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE);

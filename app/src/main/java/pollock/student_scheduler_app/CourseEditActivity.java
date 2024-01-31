@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -91,7 +92,18 @@ public class CourseEditActivity extends AppCompatActivity {
         String instructorName = editInstructorName.getText().toString();
         String instructorNumber = editInstructorNumber.getText().toString();
         String instructorEmail = editInstructorEmail.getText().toString();
+
+        if (courseName.isEmpty() || instructorName.isEmpty() || instructorNumber.isEmpty() || instructorEmail.isEmpty()){
+            Toast.makeText(getApplicationContext(), "Please Fill out all mandatory fields.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         String courseNote = editCourseNote.getText().toString();
+
+        if (newStartDate.isAfter(newEndDate)){
+            Toast.makeText(getApplicationContext(), "The End Date should be after the Start Date", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         Course editedCourse = new Course(editCourse.getId(), courseName, newStartDate, newEndDate, status, courseNote, courseInstructor.getId(), editCourse.getTermId());
         Instructor editedInstructor = new Instructor(courseInstructor.getId(), instructorName, instructorNumber, instructorEmail);

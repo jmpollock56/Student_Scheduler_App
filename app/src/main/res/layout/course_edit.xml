@@ -64,7 +64,9 @@
             <Spinner
                 android:id="@+id/editCourseStatus"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></Spinner>
+                android:layout_height="match_parent">
+
+            </Spinner>
 
             <EditText
                 android:id="@+id/instructorName"

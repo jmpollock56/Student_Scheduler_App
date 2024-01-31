@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,7 +42,6 @@ public class TermExpandedActivity extends AppCompatActivity {
     static Term selectedTerm;
     Course selectedCourse;
     private FloatingActionButton addCourseButton;
-
     private CourseRepository courseRepository;
     private InstructorRepository instructorRepository;
     LinearLayout linearLayout;
@@ -55,13 +56,13 @@ public class TermExpandedActivity extends AppCompatActivity {
         instructorRepository = new InstructorRepository(getApplication());
 
 
-        RelativeLayout relativeLayout = findViewById(R.id.rL);
+
         linearLayout = findViewById(R.id.coursesContainer);
 
 
-        final TextView termNameText = relativeLayout.findViewById(R.id.termTitle);
-        final TextView termStartText = relativeLayout.findViewById(R.id.startDate);
-        final TextView termEndText = relativeLayout.findViewById(R.id.endDate);
+        final TextView termNameText = findViewById(R.id.termTitle);
+        final TextView termStartText = findViewById(R.id.startDate);
+        final TextView termEndText = findViewById(R.id.endDate);
         termNameText.setText(String.valueOf(selectedTerm.getTitle()));
         termStartText.setText(String.valueOf(selectedTerm.getStartDate()));
         termEndText.setText(String.valueOf(selectedTerm.getEndDate()));
@@ -135,7 +136,17 @@ public class TermExpandedActivity extends AppCompatActivity {
                   String inName = instructorNameText.getText().toString();
                   String inNumber = instructorNumberText.getText().toString();
                   String inEmail = instructorEmailText.getText().toString();
+
+                if (courseName.isEmpty() || inName.isEmpty() || inNumber.isEmpty() || inEmail.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Please Fill out all mandatory fields.", Toast.LENGTH_LONG).show();
+                    return;
+                }
                   String note = optionalNote.getText().toString();
+
+                if (courseStartDate.isAfter(courseEndDate)){
+                    Toast.makeText(getApplicationContext(), "The End Date should be after the Start Date", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                   Random random = new Random();
 
@@ -176,8 +187,11 @@ public class TermExpandedActivity extends AppCompatActivity {
         ArrayList<RelativeLayout> courseLayouts = new ArrayList<>();
 
         for (Course course: courseRepository.getmAllCourses()){
-            RelativeLayout relativeLayout = createCourseLayout(course);
-            courseLayouts.add(relativeLayout);
+            if (course.getTermId() == selectedTerm.getId()){
+                RelativeLayout relativeLayout = createCourseLayout(course);
+                courseLayouts.add(relativeLayout);
+            }
+
         }
 
         return courseLayouts;
@@ -273,7 +287,6 @@ public class TermExpandedActivity extends AppCompatActivity {
             linearLayout.addView(termLayout);
         }
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

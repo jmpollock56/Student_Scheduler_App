@@ -17,6 +17,7 @@ public class CourseViewCreation {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 80 * (int) context.getResources().getDisplayMetrics().density
         );
+        layoutParams.setMargins(0,0,0,10);
 
         // Set the layout parameters for the RelativeLayout
         relativeLayout.setLayoutParams(layoutParams);

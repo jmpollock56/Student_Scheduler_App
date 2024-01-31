@@ -7,71 +7,75 @@
     android:layout_height="match_parent"
     android:background="#4B00BCD4">
 
-    <LinearLayout
-        android:id="@+id/container"
-        android:layout_width="409dp"
-        android:layout_height="729dp"
-        android:layout_marginTop="40dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="1dp">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:id="@+id/textView"
+        <LinearLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Term Name"
-            android:textAlignment="textStart"
-            android:textColor="#FFFFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_height="600dp"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="1dp">
 
-        <EditText
-            android:id="@+id/termNameEdit"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Term Name"
+                android:textAlignment="textStart"
+                android:textColor="#FFFFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Start Date"
-            android:textAlignment="textStart"
-            android:textColor="#FFFFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <EditText
+                android:id="@+id/termNameEdit"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content" />
 
-        <DatePicker
-            android:id="@+id/startDateTermEdit"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:calendarViewShown="false"
-            android:datePickerMode="spinner" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Start Date"
+                android:textAlignment="textStart"
+                android:textColor="#FFFFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="End Date"
-            android:textAlignment="textStart"
-            android:textColor="#FFFFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <DatePicker
+                android:id="@+id/startDateTermEdit"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner" />
 
-        <DatePicker
-            android:id="@+id/endDateTermEdit"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:calendarViewShown="false"
-            android:datePickerMode="spinner" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="End Date"
+                android:textAlignment="textStart"
+                android:textColor="#FFFFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/editSaveBtn"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="125dp"
-            android:backgroundTint="#009688"
-            android:text="Save"
-            android:textAlignment="center" />
+            <DatePicker
+                android:id="@+id/endDateTermEdit"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/editSaveBtn"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="125dp"
+                android:backgroundTint="#009688"
+                android:text="Save"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

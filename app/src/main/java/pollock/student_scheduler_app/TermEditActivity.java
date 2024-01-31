@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -63,6 +64,11 @@ public class TermEditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String termName = termNameEditText.getText().toString();
 
+                if (termName.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Please enter a Term Name", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 int newStartYear = termStartEdit.getYear();
                 int newStartMonth = termStartEdit.getMonth() + 1;
                 int newStartDay = termStartEdit.getDayOfMonth();
@@ -74,6 +80,11 @@ public class TermEditActivity extends AppCompatActivity {
                 int newEndDay = termEndEdit.getDayOfMonth();
 
                 LocalDate newEndDate = LocalDate.of(newEndYear, newEndMonth, newEndDay);
+
+                if (newStartDate.isAfter(newEndDate)){
+                    Toast.makeText(getApplicationContext(), "The End Date should be after the Start Date", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 Term editedTerm = new Term(editTerm.getId(), termName, newStartDate, newEndDate);
 

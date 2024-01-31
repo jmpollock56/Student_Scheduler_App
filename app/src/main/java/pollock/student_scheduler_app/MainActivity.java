@@ -7,7 +7,10 @@ import androidx.room.Room;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -50,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         linearLayout = findViewById(R.id.termContainer);
+        courseRepository = new CourseRepository(getApplication());
 
         setDatabaseItems();
 
@@ -79,6 +84,11 @@ public class MainActivity extends AppCompatActivity {
 
                 String termTitle = editTextTerm.getText().toString();
 
+                if (termTitle.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Please enter a Term Name", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 int startYear = startDatePicker.getYear();
                 int startMonth = startDatePicker.getMonth() + 1;
                 int startDayOfMonth = startDatePicker.getDayOfMonth();
@@ -91,6 +101,11 @@ public class MainActivity extends AppCompatActivity {
 
                 LocalDate endDate = LocalDate.of(endYear, endMonth, endDayOfMonth);
 
+                if (startDate.isAfter(endDate)){
+                    Toast.makeText(getApplicationContext(), "The End Date should be after the Start Date", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 Random random = new Random();
 
                 int termId = random.nextInt(10000);
@@ -99,15 +114,14 @@ public class MainActivity extends AppCompatActivity {
                 termRepository.insertTerm(newTerm);
 
 
-
                 RelativeLayout newTermLayout = TermViewCreation.createTermRelativeLayout(MainActivity.this, newTerm);
 
                 setTermClickListeners(newTermLayout, newTerm);
 
 
-
                 linearLayout.addView(newTermLayout);
 
+                dialog.dismiss();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -176,10 +190,6 @@ public class MainActivity extends AppCompatActivity {
         viewTermBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //TODO: check if there are courses associated with this term.
-
-
                 TermExpandedActivity.getTermInfo(selectedTerm);
 
                 Intent intent = new Intent(MainActivity.this, TermExpandedActivity.class);
@@ -192,6 +202,13 @@ public class MainActivity extends AppCompatActivity {
         deleteTermBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                for (Course course: courseRepository.getmAllCourses()){
+                    if (selectedTerm.getId() == course.getTermId()){
+                        Toast.makeText(getApplicationContext(), "Cannot delete Term that has associated Courses", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
                 termRepository.deleteTerm(selectedTerm);
                 alertDialog.dismiss();
 
