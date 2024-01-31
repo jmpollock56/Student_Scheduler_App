@@ -102,9 +102,10 @@ public class AssessmentExpandedActivity extends AppCompatActivity {
                 Intent intent = new Intent(AssessmentExpandedActivity.this, AssessmentAlert.class);
                 intent.setAction("ExtraOptions.AssessmentAlert.ACTION_ALERT");
                 intent.putExtra("key", showAssessment.getTitle() + " starts today!");
+                intent.putExtra("title", "An Assessment has Started!");
+                intent.putExtra("text", showAssessment.getTitle() + " starts today!");
 
-                String contentText = " starts today!";
-                String contentTitle = "An Assessment has started!";
+
 
 
                 PendingIntent sender = PendingIntent.getBroadcast(AssessmentExpandedActivity.this, numAlert, intent, PendingIntent.FLAG_IMMUTABLE);

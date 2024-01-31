@@ -22,7 +22,6 @@ public class AssessmentAlert extends BroadcastReceiver {
     private String channelId = "CHANNEL_ID2";
     private static int notificationnId;
 
-
     @SuppressLint("MissingPermission")
     @Override
     public void onReceive(Context context, Intent intent) {

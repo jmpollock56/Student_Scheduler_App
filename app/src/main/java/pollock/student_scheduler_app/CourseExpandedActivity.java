@@ -288,10 +288,9 @@ public class CourseExpandedActivity extends AppCompatActivity {
                 Intent intent = new Intent(CourseExpandedActivity.this, Alert.class);
                 intent.setAction("ExtraOptions.Alert.ACTION_ALERT");
                 intent.putExtra("key", selectedCourse.getTitle() + " starts today!");
+                intent.putExtra("title", "A Course has Started!");
+                intent.putExtra("text", selectedCourse.getTitle() + " starts today!");
 
-                String contentText = " starts today!";
-                String contentTitle = "A Course has started!";
-                Alert.getCourse(selectedCourse, contentText, contentTitle);
 
                 PendingIntent sender = PendingIntent.getBroadcast(CourseExpandedActivity.this, numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -316,10 +315,8 @@ public class CourseExpandedActivity extends AppCompatActivity {
                 Intent intent = new Intent(CourseExpandedActivity.this, Alert.class);
                 intent.setAction("ExtraOptions.Alert.ACTION_ALERT");
                 intent.putExtra("key", selectedCourse.getTitle() + " ends today!");
-
-                String contentText = " ends today!";
-                String contentTitle = "A Course is Ending!";
-                Alert.getCourse(selectedCourse, contentText, contentTitle);
+                intent.putExtra("title", "A Course has Ended!");
+                intent.putExtra("text", selectedCourse.getTitle() + " ends today!");
 
                 PendingIntent sender = PendingIntent.getBroadcast(CourseExpandedActivity.this, numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

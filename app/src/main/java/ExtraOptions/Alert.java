@@ -25,9 +25,6 @@ import pollock.student_scheduler_app.R;
 public class Alert extends BroadcastReceiver {
     String channelId = "CHANNEL_ID";
     static int notificationId;
-    static Course alertedCourse;
-    static String contentTitle;
-    static String contentText;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -37,8 +34,8 @@ public class Alert extends BroadcastReceiver {
         Toast.makeText(context, details, Toast.LENGTH_LONG).show();
         createNotificationChannel(context, channelId);
 
-        String title = intent.getStringExtra(contentTitle);
-        String text = intent.getStringExtra(contentText);
+        String title = intent.getStringExtra("title");
+        String text = intent.getStringExtra("text");
 
         NotificationCompat.Builder nCourse = new NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.baseline_school_24)
@@ -70,14 +67,5 @@ public class Alert extends BroadcastReceiver {
 
         }
     }
-
-    public static void getCourse(Course course, String newContentText, String newContentTitle){
-        alertedCourse = course;
-        contentText = newContentText;
-        contentTitle = newContentTitle;
-
-
-    }
-
 
 }

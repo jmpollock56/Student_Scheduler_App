@@ -19,7 +19,7 @@
         <receiver
             android:name="ExtraOptions.Alert"
             android:enabled="true"
-            android:exported="true">
+            android:exported="false">
 
             <intent-filter>
                 <action android:name="ExtraOptions.Alert.ACTION_ALERT"/>
@@ -30,7 +30,7 @@
         <receiver
             android:name="ExtraOptions.AssessmentAlert"
             android:enabled="true"
-            android:exported="true">
+            android:exported="false">
 
             <intent-filter>
                 <action android:name="ExtraOptions.AssessmentAlert.ACTION_ALERT"/>
@@ -42,6 +42,7 @@
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
